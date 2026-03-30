@@ -9,14 +9,14 @@
 namespace http
 {
 
-class HttpRequest
+class HttpRequest //用于封装和管理http请求的所有信息
 {
 public:
     enum Method
     {
         kInvalid, kGet, kPost, kHead, kPut, kDelete, kOptions
     };
-    
+    //构造函数
     HttpRequest()
         : method_(kInvalid)
         , version_("Unknown")
@@ -29,7 +29,7 @@ public:
     bool setMethod(const char* start, const char* end);
     Method method() const { return method_; }
 
-    void setPath(const char* start, const char* end);
+    void setPath(const char* start, const char* end);  //设置请求路径
     std::string path() const { return path_; }
 
     void setPathParameters(const std::string &key, const std::string &value);
@@ -38,7 +38,7 @@ public:
     void setQueryParameters(const char* start, const char* end);
     std::string getQueryParameters(const std::string &key) const;
     
-    void setVersion(std::string v)
+    void setVersion(std::string v)  //设置http版本
     {
         version_ = v;
     }
@@ -55,7 +55,7 @@ public:
     { return headers_; }
 
     void setBody(const std::string& body) { content_ = body; }
-    void setBody(const char* start, const char* end) 
+    void setBody(const char* start, const char* end)  //设置请求体
     { 
         if (end >= start) 
         {
@@ -72,7 +72,7 @@ public:
     uint64_t contentLength() const
     { return contentLength_; }
 
-    void swap(HttpRequest& that);
+    void swap(HttpRequest& that);  //与另一个HttpRequest对象交换数据
 
 private:
     Method                                       method_; // 请求方法
@@ -85,5 +85,5 @@ private:
     std::string                                  content_; // 请求体
     uint64_t                                     contentLength_ { 0 }; // 请求体长度
 };  
-
+//该类用于http服务器接收和解析客户端请求，将原始http请求数据转换为结构化的对象，便于业务逻辑处理；
 } // namespace http

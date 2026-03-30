@@ -19,16 +19,16 @@ public:
         kExpectBody, // 解析请求体
         kGotAll, // 解析完成
     };
-    
+    // 构造函数
     HttpContext()
     : state_(kExpectRequestLine)
     {}
 
-    bool parseRequest(muduo::net::Buffer* buf, muduo::Timestamp receiveTime);
+    bool parseRequest(muduo::net::Buffer* buf, muduo::Timestamp receiveTime); //从缓冲区解析http请求数据，返回是否成功
     bool gotAll() const 
     { return state_ == kGotAll;  }
 
-    void reset()
+    void reset()  //重置解析状态至初始状态，清空当前请求数据。
     {
         state_ = kExpectRequestLine;
         HttpRequest dummyData;
@@ -44,8 +44,8 @@ public:
 private:
     bool processRequestLine(const char* begin, const char* end);
 private:
-    HttpRequestParseState state_;
-    HttpRequest           request_;
+    HttpRequestParseState state_;  //当前解析状态
+    HttpRequest           request_;  //存储解析后的http请求对象
 };
 
 } // namespace http
